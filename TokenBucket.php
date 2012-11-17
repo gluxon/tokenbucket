@@ -9,7 +9,7 @@ class TokenBucket {
 	private $fill_rate;
 	private $timestamp;
 
-	function __construct($tokens, $fill_rate) {
+	public function __construct($tokens, $fill_rate) {
 		/* Tokens is the total tokens in the bucket. fill_rate is the
 		 * rate in tokens/second that the bucket will be refilled. */
 		$this->capacity = $tokens;
@@ -18,17 +18,17 @@ class TokenBucket {
 		$this->timestamp = time();
 	}
 
-	function consume($tokens) {
+	public function consume($tokens) {
 		/* Consume tokens from the bucket. Returns True if there were
 		 * sufficient tokens, otherwise False. */
-		if ($tokens <= $this->tokens) {
+		if ( $tokens <= $this->tokens() ) {
 			$this->tokens -= $tokens;
 			return true;
 		}
 		return false;
 	}
 
-	function tokens() {
+	public function tokens() {
 		$now = time();
 		if ($this->tokens < $this->capacity) {
 			$delta = $this->fill_rate * ($now - $this->timestamp);
